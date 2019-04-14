@@ -15,19 +15,43 @@ var budgetController = (function() {
   }
 
   return {
-    doAddItem : function(money) {
-      if(money < 0) {
-        incomeList.push();
-      } else if (money > 0){
-        expenseList.push();
+    doAddItem : function(inArg) {
+      if(inArg.type === 'inc') {
+        incomeList.push(inArg.value);
+        console.log(incomeList);
+      } else {
+        expenseList.push(inArg.value);
+        console.log(expenseList);
       }
+    },
+    doCalculate : function() {
+      return calculateBudget();
     }
   }
 
 })();
 
 var uIController = (function() {
-    //sample code
+    //private static final map
+    var domString = {
+      inputType : '.add__type',
+      inputDescription : '.add__description',
+      inputValue : '.add__value',
+      addBtn : '.add__btn'
+    }
+
+    return {
+      getInput : function() {
+        return {
+          type : document.querySelector(domString.inputType).value, //will be either inc or exp
+          description : document.querySelector(domString.inputDescription).value,
+          value : document.querySelector(domString.inputValue).value
+        }
+      },
+      getDom : function() {
+        return domString;
+      }
+    }
 })();
 
 var controller = (function(budgetCtrl, UICtrl) {
@@ -35,9 +59,10 @@ var controller = (function(budgetCtrl, UICtrl) {
 var addItem = function() {
   console.log('event occurd');
   //1. Get the field input data
-  var inputBudget = document.querySelector('.add__description').value;
+  var input = UICtrl.getInput();
+  console.log(input);
   //2. Add the item to the budget budgetController
-
+  budgetCtrl.doAddItem(input);
   //3. Add the item to the UI
 
   //4. calculate the budget
@@ -45,14 +70,18 @@ var addItem = function() {
   //5. Display the budget on the UI
 }
 
-
-  //Anthor key press event which has the same function as click
-document.addEventListener('keypress', function(event) {
-    if(event.keyCode === 13) {
-      addItem();
-    }
-});
-
-document.querySelector('.add__btn').addEventListener('click', addItem);
+return {
+  init : function() {
+    //Anthor key press event which has the same function as click
+    document.addEventListener('keypress', function(event) {
+        if(event.keyCode === 13) {
+          addItem();
+        }
+    });
+    document.querySelector(UICtrl.getDom().addBtn).addEventListener('click', addItem);
+  }
+}
 
 })(budgetController, uIController);
+
+controller.init();

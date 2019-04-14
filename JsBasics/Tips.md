@@ -12,5 +12,6 @@
   <link type="text/javascript" src="D:\GitHubRepository\JsWorld\DomManipulation\PigGame\app.js">
   ```
 
-  
+* The property in object should be separated by ' , ' 
 
+* You should not use argument like 'in'

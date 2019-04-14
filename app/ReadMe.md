@@ -95,3 +95,40 @@ Note over KeyboardEvent : keyCode : 13
 
 
 
+---------------------
+
+# Get The Input
+
+* html
+
+  ```html
+  <div class="add__container">
+      <select class="add__type">
+         <option value="inc" selected>+</option>
+         <option value="exp">-</option>
+      </select>
+       <input type="text" class="add__description" placeholder="Add description">
+       <input type="number" class="add__value" placeholder="Value">
+       <button class="add__btn"><i class="ion-ios-checkmark-outline"></i></button>
+   </div>
+  ```
+
+* JavaScript
+
+  ```javascript
+  var uIController = (function() { //class
+      return {
+        getInput : function() { //public function
+            //The function should return an object and this object is just
+            //like a form.
+          return { //return block
+            type : document.querySelector('.add__type').value,
+            description : document.querySelector('.add__description').value,
+            value : document.querySelector('.add__value').value
+          }
+        }
+      }
+  })();
+  ```
+
+  
