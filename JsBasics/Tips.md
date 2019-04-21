@@ -15,3 +15,5 @@
 * The property in object should be separated by ' , ' 
 
 * You should not use argument like 'in'
+
+* single quotes with double quotes nested in it works!
