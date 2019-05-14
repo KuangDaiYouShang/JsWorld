@@ -1,3 +1,5 @@
+
+
 # Modules:
 
 1. Important aspect of any robust applications`s architecture
@@ -270,4 +272,174 @@ Note over KeyboardEvent : keyCode : 13
 
            
 
-      
+      #  Calculate Budget
+
+      * How and why to create simple, reusable functions with only one purpose
+
+      * How to sum all elements of an array using the forEach method
+
+        ```javascript
+          //calculate the sum of a list.
+          var calculateTotal = function(type) {
+            var sum = 0;
+            data.allItems[type].forEach(function(cur) {
+              sum += cur.value;
+            });
+            data.totals[type] = sum;
+          };
+        ```
+
+      * The calculated budget is stored in the data structure in Budget controller.
+
+      * Use budgetController.getBudget() to get the budget which is an object.
+
+        ``` java
+            doGetBudget : function() {
+              return {
+                budget : data.budget,
+                totalInc : data.totals['inc'],
+                totalExp : data.totals['exp'],
+                percentage : data.percentage
+              }
+            }
+        ```
+
+      * Use UIController.displayBudget(budget) to display the budget on the web page.
+
+        * Put the elements in the budget to corresponding html fields.
+
+          ``` javascript
+                displayBudget : function(obj) {
+                  document.querySelector(domString.budgetLabel).textContent = obj.budget;
+                  document.querySelector(domString.incomeLabel).textContent = obj.totalInc;
+                  document.querySelector(domString.expLabel).textContent = obj.totalExp;
+          
+                  if(obj.totalInc > 0) {
+                    document.querySelector(domString.percentageLabel).textContent = obj.percentage;
+                  } else {
+                    document.querySelector(domString.percentageLabel).textContent = '---';
+                  }
+                }
+          ```
+
+          
+
+      *  call UIController.displayBudget(budget) in init() function for initialization.
+
+# Project Structure so far..
+
+![Project structure_A](D:\GitHubRepository\JsWorld\app\Project structure_A.jpg)
+
+## To do list
+
+* Add event handler
+* Delete the item from our data structure
+* Delete the item to the UI
+* Re-calculate budget
+* Update the UI
+
+## Event Delegation 
+
+###                     Event Bubbling
+
+* When an event happens on an element, it first runs the handlers on it, then on its parent, then all the way up on other ancestors.
+
+* For instance, if we have a single handler `form.onclick`, then it can “catch” all clicks inside the form. No matter where the click happened, it bubbles up to `<form>` and runs the handler. 
+
+  https://javascript.info/bubbling-and-capturing
+
+  ### Usage
+
+  1. When we have an element with lots of child elements that we are interested in.;
+  2. When we want an event handler attached to an element that is not yet in the DOM when our page is loaded.
+
+  
+
+  * How to use Event delegation in practice
+
+  * How to use IDs in HTML to connect the UI with the data model
+
+  * How to use the parentNode property for DOM traversing.
+
+    
+
+    First of all , we need to add the event listener to the container element which contains both the income element and expense element.
+
+    ``` html
+    <div class="container clearfix">
+                    <div class="income">
+                        <h2 class="icome__title">Income</h2>
+                        <div class="income__list">
+                             income ...    
+                        </div>
+                    </div>
+                    <div class="expenses">
+                        <h2 class="expenses__title">Expenses</h2>
+                        <div class="expenses__list">
+                            expense ...
+                        </div>
+                    </div>
+        
+    ```
+
+    
+
+    add event listener in the init() function.
+
+    ```javascript
+    document.querySelector(UICtrl.getDom().container).addEventListener('onClick', ctrlDeletion);
+    ```
+
+    The actual ctrlDeletion function is like :
+
+    ``` javascript
+    var ctrlDeletion(event) {
+      var itemID, splitID, type, id;
+        //DOM traversing.
+      itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+      if(itemID) {
+        splidID = itemID.split('-');
+        type = splitID[0];
+        id = splitID[1];
+    
+        // 1. delete the item from the data structure  (budget controller)
+        
+        // 2.  delete the item from the UI   (UI controller)
+    
+        // 3.  update and show the new budget   (common function)
+      }
+    }
+    ```
+
+
+
+ * Another method to loop over an array: map
+
+   The difference between map and for each is that map returns a brand new array.
+
+   ``` javascript
+   var ids = data.allItems[type].map(function(cur) {
+           return cur.id;
+         });
+   ```
+
+   
+
+ * How to remove elements from an array using the splice method.
+
+   ```javascript
+         if(index != -1) {
+           data.allItems[type].splice(index, 1); // "1" is number to delete start from index.
+         }
+   ```
+
+* In javascript  , we can only delete an child, not an element.
+
+  ```javascript
+  var el = document.getElementById(id);
+  el.parentNode.removeChild(el);
+  ```
+
+* When you select an DOM with name like : <div class="container clearfix">, you can use '.container'
+
+  
