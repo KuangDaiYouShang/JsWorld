@@ -150,6 +150,13 @@ var uIController = (function() {
         return (type == 'inc' ? '+' : '-') + ' ' + int + '.' + decimal;
     };
 
+    //customized for each function
+    var nodeListForEach = function(list, callBack) {
+      for(var i = 0; i < list.length; i++) {
+        callBack(list[i], i);
+      }
+    };
+
     return {
       getInput : function() {
         return {
@@ -210,12 +217,6 @@ var uIController = (function() {
       displayPercentage : function(percentages) {
 
           var fields = document.querySelectorAll(domString.percentageLabels);
-          //customized for each function
-          var nodeListForEach = function(list, callBack) {
-            for(var i = 0; i < list.length; i++) {
-              callBack(list[i], i);
-            }
-          };
 
           nodeListForEach(fields, function(cur, index) {
             if(percentages[index] > 0) {
@@ -224,6 +225,15 @@ var uIController = (function() {
               cur.textContent = '---';
             }
           })
+      },
+
+      changeColor : function() {
+        var fields = document.querySelectorAll(domString.inputType + ',' + domString.inputDescription + ',' +
+      domString.inputValue);
+        nodeListForEach(fields, function(cur){
+          cur.classList.toggle('red-focus');
+        });
+        document.querySelector(domString.addBtn).classList.toggle('red');
       }
     }
 })();
@@ -314,7 +324,10 @@ return {
 
     document.querySelector(UICtrl.getDom().addBtn).addEventListener('click', function() {
       addItem();
+    });
 
+    document.querySelector(UICtrl.getDom().inputType).addEventListener('change', function() {
+      UICtrl.changeColor();
     });
 
     displayDate();

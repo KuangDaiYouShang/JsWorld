@@ -561,3 +561,34 @@ var displayDate = function() {
 }
 ```
 
+## How and when to use 'Change' events
+
+​	When the inputType is '+', the input field should be surrounded with blue
+
+​         while it it red for '-'.
+
+* Event Listener
+
+  ``` javascript
+      document.querySelector(UICtrl.getDom().inputType).addEventListener('change', function() {
+        UICtrl.changeColor();
+      });
+  ```
+
+* Actual function in UI controller
+
+  ``` javascript
+        changeColor : function() {
+          var fields = document.querySelectorAll(domString.inputType + ',' + domString.inputDescription + ',' +
+        domString.inputValue);
+            //nodeListForEach is moved from a function inside a function to private function in UI controller
+          nodeListForEach(fields, function(cur){
+            cur.classList.toggle('red-focus');
+          });
+          document.querySelector(domString.addBtn).classList.toggle('red');
+        }
+  ```
+
+  
+
+# WOW, you made it! 2019/05/18
