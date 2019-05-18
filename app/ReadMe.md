@@ -413,6 +413,20 @@ Note over KeyboardEvent : keyCode : 13
 
 
 
+## memo
+
+------
+
+1. Before we delete: figure out the type and ID
+2. Even if we have this, the ID and indexing of the array doesn`t match.
+3. Use map: The difference between map and forEach is that map returns a brand new array. This creates an array of index from the object array. Then we use ids.indexOf(is) to get the index of the id.
+4. Use array.splice(index, numToDelete) to remove items(if index is not -1)
+5. Since the item ID is created by split, when we compare it to -1, no expected result will come.
+
+---
+
+
+
  * Another method to loop over an array: map
 
    The difference between map and for each is that map returns a brand new array.
@@ -442,4 +456,108 @@ Note over KeyboardEvent : keyCode : 13
 
 * When you select an DOM with name like : <div class="container clearfix">, you can use '.container'
 
-  
+
+## Update Percentage
+
+Calculate percentages
+
+Update percentage in the UI
+
+Display the current month and year
+
+Number formatting
+
+Improve input field UX
+
+* The percentages should be updated whenever a new income is added or deleted
+
+  -> call a function in those two moves.
+
+* Need to calculate percentage for each object individually: There should be a method for each of the object
+
+  * add prototype function calculate percentage and get percentage.
+
+    ``` javascript
+      ExpenseObj.prototype.calculatePercent = function(totalIncome) {
+        if(totalIncome > 0) {
+          this.percentage = Math.round(this.value / totalIncome) * 100);
+        } else {
+          this.percentage = '---';
+        }
+      };
+    ```
+
+    
+
+  * add attribute percentage to the expense
+
+    ```javascript
+    var ExpenseObj = function(id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+        this.percentage = -1;
+      };
+    
+    ```
+
+  * Update percentage on UI
+
+    The DOM fields we want to update as a list. Instead of using slice to convert the list
+
+    to an array to use the forEach function, customize the forEach function :
+
+    ``` javascript
+              var nodeListForEach = function(list, callback) {
+                for(var i = 0; i < list.length; i++) {
+                  callBack(list[i], i);
+                }
+              };
+    
+              nodeListForEach(percentagse, function(cur, index) {
+                if(percentages[index] > 0) {
+                  cur.textContent = percentages[index];
+                } else {
+                  cur.textContent = '---';
+                }
+              })
+    ```
+
+  ## Number formatting
+
+  * Number of decimal numbers
+
+  * comma for 3 digits
+
+  * '+' or '-' at the very beginning
+
+    ```javascript
+    var formatNums = function(num, type) {
+        var int, newNum;
+        num = Math.abs(num);
+        num = num.toFixed(2);
+        decimal = num.split('.')[1];
+        int = num.split('.')[0];
+        if(int.length > 3) {
+          int = int.subString(0, int.length-3) + ',' + int.subString(int.length-3, int.length);
+        }
+        return (type == 'inc' ? '+' : '-') + int + '.' + decimal;
+    };
+    ```
+
+## How to get the current date by using the Date object constructor
+
+``` javascript
+var displayDate = function() {
+
+  var now, month, year;
+
+  months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+    'November', 'December'];
+  now = new Date();
+  year = now.getFullYear();
+  month = now.getMonth();
+  document.querySelector(UICtrl.getDom().dateLabel).textContent = months[month] + ' ' + year;
+}
+```
+
