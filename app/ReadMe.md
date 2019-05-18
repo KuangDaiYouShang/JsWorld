@@ -592,3 +592,5 @@ var displayDate = function() {
   
 
 # WOW, you made it! 2019/05/18
+
+![project_structure](D:\GitHubRepository\JsWorld\app\project_structure.jpg)
