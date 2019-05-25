@@ -72,7 +72,9 @@ console.log(retirement);
 const boxes = document.querySelectorAll('.box');
 //In ES5, we use slice to change list nodes to an array.
 //However, in ES6, There is Array.from(list)
-const boxesArr6 = Arrays.from(boxes).forEach(cur => cur.style.backgroundColor =
+const boxesArr6 = Array.from(boxes);
+
+Array.from(boxes).forEach(cur => cur.style.backgroundColor =
 'dodgerblue');
 /*
 If we want to put 'continue' / 'break' into loop, instead of
@@ -90,3 +92,47 @@ for(const el of boxesArr6) {
 ages = [12,17,8,21,14,11];
 console.log(ages.findIndex(cur => cur >= 18)); //find index
 console.log(ages.find(cur => cur >= 18));//find element
+
+/*
+The spread operator
+可变参数组
+*/
+var addFourAges = function(a, b, c, d) {
+  return a + b + c + d;
+}
+//ES6
+var ages = [18, 30, 12, 21];
+const sum = addFourAges(...ages);
+
+//join multiple arrays
+const familySmith = ['John', 'Jane', 'Mark'];
+const familyMiller = ['Mary', 'Bob', 'Ann'];
+const bigFamily = [...familySmith, 'Lily', ...familyMiller];
+
+//example
+const h = document.querySelector('h1');
+const boxes_2 = document.querySelectorAll('.box');
+const all = [h, ...boxes_2];
+
+Array.from(all).forEach(cur => cur.style.color = 'purple');
+
+/*
+Rest parameters allows us to pass arbitrary number of arguments into a function.
+*/
+//ES5: When we want to pass multiple arguments, not sure how many
+//use arguments key word in the function.
+function isFullAge5() {
+  console.log(arguments);
+  var argArrs = Array.prototype.slice.call(arguments);
+
+  argArrs.forEach(function(cur) {
+    console.log((2016 -cur) >= 18);
+  });
+}
+isFullAge5(1990, 1990, 1965);
+
+//ES6:
+function isFullAge6(limit, ...years) {
+  years.forEach(cur => console.log((2016 - cur) >= 18));
+}
+isFullAge6(25,1990,1990,1965);

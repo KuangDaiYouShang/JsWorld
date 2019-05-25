@@ -95,3 +95,37 @@
 * array = Arrays.from(list);
 * for (const el of array) {};
 * array.find(callback);
+
+### The spread operator
+
+* join the multiple arrays.
+
+* pass an array as arguments to the function with multiple arguments.
+
+  ``` javascript
+  var addFourAges = function(a, b, c, d) {
+    return a + b + c + d;
+  }
+  var ages = [18, 30, 12, 21];
+  const sum = addFourAges(...ages);
+  ```
+
+  Used in the function call!!
+
+### Rest parameters
+
+* Rest parameters allows us to pass arbitrary number of arguments into a function.
+
+* Exact opposite as spread operators.
+
+  ``` javascript
+  function isFullAge6(limit, ...years) {
+    years.forEach(cur => console.log((2016 - cur) >= 18));
+  }
+  isFullAge6(25,1990,1990,1965);
+  //specific argument + undefined number of arguments.
+  ```
+
+  Used in the function decoration!!!
+
+* In all, if you want to pass an array to the function with multiple arguments , use spread operator. If you want to make the function to accept arbitrary number of arguments, use rest parameters.
