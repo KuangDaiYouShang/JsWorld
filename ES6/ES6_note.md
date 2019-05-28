@@ -129,3 +129,51 @@
   Used in the function decoration!!!
 
 * In all, if you want to pass an array to the function with multiple arguments , use spread operator. If you want to make the function to accept arbitrary number of arguments, use rest parameters.
+
+### Default Parameters
+
+* JavaScript allows calling function without specifying all arguments
+
+  ``` javascript
+  function SmithPerson(a1, a2, a3='male', a4='1990') {
+    this.a1 = a1;
+    this.a2 = a2;
+    this.a3 = a3;
+    this.a4 = a4;
+  }
+  
+  var smith = new SmithPerson('jerry', 'smith');
+  ```
+
+### Map
+
+* Can use anything as key while object only accepts string
+
+  ``` javascript
+  const question = new Map();
+  //set
+  question.set(1, 'question1');
+  question.set(true, 'question2');
+  ```
+
+* has methods like forEach, for of, has, clear
+
+  ``` javascript
+  //has
+  if(question.has(1)) {
+    console.log('question has key 1');
+  }
+  //clear
+  //question.clear();
+  
+  question.forEach((value, key) => console.log(`This is ${key} and its set to ${value}`));
+  
+  for(let [key, value] of question) {
+    if(typeof(key) === 'number') {
+      console.log(`Answer${key}:${value}`); //This is `` ,not ''
+    }
+  }
+  ```
+
+  
+

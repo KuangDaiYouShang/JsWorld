@@ -136,3 +136,36 @@ function isFullAge6(limit, ...years) {
   years.forEach(cur => console.log((2016 - cur) >= 18));
 }
 isFullAge6(25,1990,1990,1965);
+
+//===================Default Parameters===============
+/*
+JavaScript allows calling function without specifying all arguments
+*/
+function SmithPerson(a1, a2, a3='male', a4='1990') {
+  this.a1 = a1;
+  this.a2 = a2;
+  this.a3 = a3;
+  this.a4 = a4;
+}
+
+var smith = new SmithPerson('jerry', 'smith');
+
+//==============Map================================
+const question = new Map();
+//set
+question.set(1, 'question1');
+question.set(true, 'question2');
+//has
+if(question.has(1)) {
+  console.log('question has key 1');
+}
+//clear
+//question.clear();
+
+question.forEach((value, key) => console.log(`This is ${key} and its set to ${value}`));
+
+for(let [key, value] of question) {
+  if(typeof(key) === 'number') {
+    console.log(`Answer${key}:${value}`); //This is `` ,not ''
+  }
+}
