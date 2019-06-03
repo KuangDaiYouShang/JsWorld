@@ -177,3 +177,66 @@
 
   
 
+### Classes
+
+* In ES5
+
+  ``` javascript
+  var Person5 = function(name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+  }
+  //add function to prototype
+  Person5.prototype.calculateAge = function() {
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+  }
+  
+  var Athlete5 = function(name, yearOfBirth, job, olympicGames, medals) {
+    Person5.call(this, name, yearOfBirth, job);
+    this.olympicGames = olympicGames;
+    this.medals = medals;
+  }
+  
+  //This makes Athlete subclass of Person.
+  Athlete5.prototype = Object.create(Person5.prototype);
+  
+  //method wonMedal only belongs to Athlete5.
+  Athlete5.prototype.wonMedal = function() {
+    this.medals++;
+    console.log(this.medals);
+  }
+  ```
+
+* In ES6
+
+  ``` javascript
+  class Person6 {
+    constructor(name, yearOfBirth, job) {
+      this.name = name;
+      this.yearOfBirth = yearOfBirth;
+      this.job = job;
+    }
+  
+    calculateAge() {
+      var age = new Date().getFullYear();
+      console.log(age);
+    }
+  }
+  
+  class Athlete6 extends Person6 {
+    constructor(name, yearOfBirth, job, olympicGames, medals) {
+      super(name, yearOfBirth, job);
+      this.olympicGames = olympicGames;
+      this.medals = medals;
+    }
+  
+    wonMedal() {
+      this.medals++;
+      console.log(this.medals);
+    }
+  }
+  ```
+
+  

@@ -169,3 +169,150 @@ for(let [key, value] of question) {
     console.log(`Answer${key}:${value}`); //This is `` ,not ''
   }
 }
+
+//===========ES5 classes====================
+var Person5 = function(name, yearOfBirth, job) {
+  this.name = name;
+  this.yearOfBirth = yearOfBirth;
+  this.job = job;
+}
+//add function to prototype
+Person5.prototype.calculateAge = function() {
+  var age = new Date().getFullYear() - this.yearOfBirth;
+  console.log(age);
+}
+
+var Athlete5 = function(name, yearOfBirth, job, olympicGames, medals) {
+  Person5.call(this, name, yearOfBirth, job);
+  this.olympicGames = olympicGames;
+  this.medals = medals;
+}
+
+//This makes Athlete subclass of Person.
+Athlete5.prototype = Object.create(Person5.prototype);
+
+//method wonMedal only belongs to Athlete5.
+Athlete5.prototype.wonMedal = function() {
+  this.medals++;
+  console.log(this.medals);
+}
+
+//===========ES6 classes====================
+class Person6 {
+  constructor(name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+  }
+
+  calculateAge() {
+    var age = new Date().getFullYear();
+    console.log(age);
+  }
+}
+
+class Athlete6 extends Person6 {
+  constructor(name, yearOfBirth, job, olympicGames, medals) {
+    super(name, yearOfBirth, job);
+    this.olympicGames = olympicGames;
+    this.medals = medals;
+  }
+
+  wonMedal() {
+    this.medals++;
+    console.log(this.medals);
+  }
+}
+
+/////////////////////////////////
+// CODING CHALLENGE
+
+/*
+Suppose that you're working in a small town administration, and you're in charge of two town elements:
+1. Parks
+2. Streets
+It's a very small town, so right now there are only 3 parks and 4 streets. All parks and streets have a name and a build year.
+At an end-of-year meeting, your boss wants a final report with the following:
+1. Tree density of each park in the town (forumla: number of trees/park area)
+2. Average age of each town's park (forumla: sum of all ages/number of parks)
+3. The name of the park that has more than 1000 trees
+4. Total and average length of the town's streets
+5. Size classification of all streets: tiny/small/normal/big/huge. If the size is unknown, the default is normal
+All the report data should be printed to the console.
+HINT: Use some of the ES6 features: classes, subclasses, template strings, default parameters, maps, arrow functions, destructuring, etc.
+*/
+
+
+class Town {
+  constructor(...constructions) {
+    this.constructions = constrcutions;
+  }
+  var parks = constructions.map(e => {
+    if(e instanceof Park) {
+      return e;
+    }
+  });
+  //var streets = constructions.map(e => (e instanceof Street));
+  report() {
+    parks.forEach(e => e.treeDensity());
+    const parkAge = parks.map(e => e.age);
+    const averageParkAge = parkAge.reduce((a,b) => a + b, 0) / 3;
+    console.log(averageParkAge);
+    parks.forEach(e => {
+      if(e.trees > 1000) {
+        console.log(`The park ${e.name} has more than 1000 trees`);
+      }
+    });
+    const totalStreetLength = streets.map(e => e.length).reduce((a,b) => a + b, 0);
+    const avgStreetLength = totalStreetLength / 4;
+    console.log(`The total length of the street is ${totalStreetLength} and the
+      average lenth of the street is ${avgStreetLength}`);
+    streets.forEach(e => console.log(e.size));
+  }
+}
+
+class Construction {
+  constructor(name, yearOfBuilding) {
+    this.name = name;
+    this.yearOfBuilding = yearOfBuilding;
+  }
+  calculateAge() {
+    return new Date().getFullYear() - this.yearOfBuilding;
+  }
+}
+
+class Park extends Construction {
+  constructor(name, yearOfBuilding, trees, area) {
+    super(name, yearOfBuilding);
+    this.trees = trees;
+    this.area = area;
+  }
+  treeDensity() {
+    const density =  this.trees/this.area;
+    console.log(`The tree density of park ${this.name} is ${density}`);
+  }
+}
+
+class Street extends Construction {
+  constructor(name, yearOfBuilding, length, size=3) {
+    super(name, yearOfBuilding);
+    this.length = length;
+    this.size = size;
+  }
+
+  classifyStreet() {
+    const classfication = new Map();
+    classification.set(1, 'tiny');
+    classification.set(2, 'small');
+    classification.set(3, 'normal');
+    classification.set(4, 'big');
+    classification.set(5, 'huge');
+    console.log(`${this.name}, built in ${this.year} is a ${classfication.get(this.size)} street`);
+  }
+}
+
+const streetA = new Street('StreetA', 1990, 1000, 1000);
+const parkA = new Park('ParkA', 1990, 1000, 1000);
+
+Town t = new Town(streetA, parkA);
+t.report();
