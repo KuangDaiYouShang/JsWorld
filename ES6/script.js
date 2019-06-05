@@ -243,34 +243,6 @@ HINT: Use some of the ES6 features: classes, subclasses, template strings, defau
 */
 
 
-class Town {
-  constructor(...constructions) {
-    this.constructions = constrcutions;
-  }
-  var parks = constructions.map(e => {
-    if(e instanceof Park) {
-      return e;
-    }
-  });
-  //var streets = constructions.map(e => (e instanceof Street));
-  report() {
-    parks.forEach(e => e.treeDensity());
-    const parkAge = parks.map(e => e.age);
-    const averageParkAge = parkAge.reduce((a,b) => a + b, 0) / 3;
-    console.log(averageParkAge);
-    parks.forEach(e => {
-      if(e.trees > 1000) {
-        console.log(`The park ${e.name} has more than 1000 trees`);
-      }
-    });
-    const totalStreetLength = streets.map(e => e.length).reduce((a,b) => a + b, 0);
-    const avgStreetLength = totalStreetLength / 4;
-    console.log(`The total length of the street is ${totalStreetLength} and the
-      average lenth of the street is ${avgStreetLength}`);
-    streets.forEach(e => console.log(e.size));
-  }
-}
-
 class Construction {
   constructor(name, yearOfBuilding) {
     this.name = name;
@@ -301,18 +273,46 @@ class Street extends Construction {
   }
 
   classifyStreet() {
-    const classfication = new Map();
+    const classification = new Map();
     classification.set(1, 'tiny');
     classification.set(2, 'small');
     classification.set(3, 'normal');
     classification.set(4, 'big');
     classification.set(5, 'huge');
-    console.log(`${this.name}, built in ${this.year} is a ${classfication.get(this.size)} street`);
+    console.log(`${this.name}, built in ${this.year} is a ${classification.get(this.size)} street`);
   }
 }
 
-const streetA = new Street('StreetA', 1990, 1000, 1000);
-const parkA = new Park('ParkA', 1990, 1000, 1000);
+const streets = [new Street('StreetA', 1990, 1000, 1), new Street('StreetB', 1990, 1000, 2), new Street('StreetC', 1990, 1000),
+new Street('StreetD', 1990, 1000, 4)];
+const parks = [new Park('ParkA', 1990, 1000, 1000), new Park('ParkB', 1990, 1000, 1000), new Park('ParkC', 1990, 1000, 1000)];
 
-Town t = new Town(streetA, parkA);
-t.report();
+function calcTotalAndAvg(arr) {
+  const total = arr.reduce((a,b) => a + b, 0);
+  return [total, total/arr.length];
+}
+
+function reportParks(p) {
+  console.log('=====Start of coding challenge===========');
+  //density
+  parks.forEach(e => e.treeDensity());
+  //average age
+  const ages = p.map(e=>e.calculateAge());
+  const [totalAge, avgAge] = calcTotalAndAvg(ages);
+  console.log(`The average age of the parks in this town is ${avgAge}`);
+  //trees > 1000
+  const numTreesArr = p.filter(el => el.trees > 999);
+  numTreesArr.forEach(el => console.log(el.name));
+}
+
+function reportStreets(s) {
+  //size
+  streets.forEach(e => e.classifyStreet());
+  //total and average length
+  const lengths = s.map(el => el.length);
+  const[totalLength, avgLength] = calcTotalAndAvg(lengths);
+  console.log(`The total length of the streets is ${totalLength} and the average length is ${avgLength}`);
+}
+
+reportParks(parks);
+reportStreets(streets);

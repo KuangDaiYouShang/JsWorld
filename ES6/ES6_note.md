@@ -239,4 +239,22 @@
   }
   ```
 
-  
+
+### reduce  
+
+like sum() in java. 
+
+``` javascript
+arr.reduce((a,b) => a + b, 0);
+//a: accumulator, b: current value, 0 : initial value
+```
+
+### Properties in class
+
+* we don`t need to provide get/set method to access the values in a class, Instead, we can access them via 'class.property' just like the object.
+
+### Array.find() and Array.filter()
+
+* Arrays.find(el => {}) returns the first element in the array that satisfies the provided testing function.
+* Array.filter works just fine as the filter in java.
+
