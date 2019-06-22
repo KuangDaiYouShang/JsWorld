@@ -139,4 +139,159 @@ export const elements = {
   }
   ```
 
+
+## What if the title is too long and we just want it to be one lined ?
+
+* use Array.reduce(callback, start) , String.split() and Array.join()
+
+  ``` javascript
+  const limitTitle = (title, limit = 17) => {
+     const newTitle = [];
+     if(title.length > 17) {
+       title.split(' ').reduce((acc, cur) => {
+         if(acc + cur.length <= 17) {
+           newTitle.push(cur);
+         }
+         return acc + cur.length; // this will be the new acc
+       }, 0);
+     }
+     return '${newTitle.join(' ')} ...'; //join is the opposite of split
+  }
+  ```
+
+
+## Render a loader while waiting for the result:
+
+* Insert loader under the search result area: 
+
+  ``` javascript
+  export const renderLoader = parent => {
+    const loader = `
+      <div class="${elementStrings.loader}">
+        <svg>
+          <use href="img/icons.svg#icon-cw"></use>
+        </svg>
+      </div>
+    `;
+    parent.insertAdjacentHTML('afterbegin', loader);
+  };
+  ```
+
+* The loader css is like :
+
+  ``` css
+  .loader {
+    margin: 5rem auto;
+    text-align: center; }
+    .loader svg {
+      height: 5.5rem;
+      width: 5.5rem;
+      fill: #F59A83;
+      transform-origin: 44% 50%;
+      animation: rotate 1.5s infinite linear; }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0); }
+    100% {
+      transform: rotate(360deg); } }
+  
+  ```
+
+* Have to delete the loader after search result appear. Since the loader is not there before we click search button, we cant prepare the node before hand:
+
+  ``` javascript
+  export const clearLoader = () => {
+    const loader = document.querySelector(`.${elementStrings.loader}`);
+    if(loader) loader.parentElement.removeChild(loader);
+  };
+  ```
+
+## Implementing pagination:
+
+* How to use .closest method for easier event handling
+
+* How and why to use data-* attributes in HTML5
+
+  ``` javascript
+  export const displayRecipes = (recipes, page=1, resPerPage=5) => {
+    //decide the start and end elements
+    const start = page - 1;
+    const end = page * resPerPage;
+    recipes.slice(start, end).forEach(renderRecipe); //slice the array for page
+      //insert html blocks
+    renderButtons(page, recipes.length, resPerPage);
+  }
+  ```
+
+* create button html block: 
+
+  The data- attribute in html5 will be used for event listener later, BY
+
+  ``` javascript
+  const btn = e.target.closest('.btn-inline');
+  const goToPage = parseInt(btn.dataset.goto, 10); //data-goto
+  
+  ```
+
+  * button html block and string template
+
+  ``` javascript
+  const createButtons = (page, type) => `
+    <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ?  page-1 : page + 1}>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+        </svg>
+        <span>Page ${type === 'prev' ? page-1 : page + 1}</span>
+    </button>
+    `;
+  ```
+
+* classic three-way pattern of pages:
+
+  compare the current page with the 1 and total pages
+
+  ``` javascript
+  const renderButtons = (page, numRes, resPerPage) => {
+    const pages = Math.ceil(numRes / resPerPage);
+    let button;
+    if(page == 1 && pages > 1) {
+      //next button
+      button = createButtons(1, 'next');
+    } else if (page > 1 && page < pages) {
+      //prev and next button
+      button = `${createButtons(page, 'prev')}
+                ${createButtons(page, 'next')}`;
+    } else if (page == pages && pages > 1) {
+      //prev button
+      button = createButtons(pages, 'prev');
+    }
+    elements.resultPages.insertAdjacentHTML('afterbegin', button);
+  }
+  ```
+
+* Attach the event handler to the page button:
+
+  where we add to if the button is not even there when the page is loaded.
+
+  Actually, even if the button is added, we only want the data- attribute in the parent node.
+
+  ### Use event delegation and Element.closest()
+
+  Starting with the [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) itself, the `**closest()**` method traverses parents (heading toward the document root) of the [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) until it finds a node that matches the provided selectorString. Will return itself or the matching ancestor. If no such element exists, it returns `null`. 
+
+  
+
+  ``` javascript
+  elements.searchRes.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-inline');
+    if(btn) {
+        const goToPage = parseInt(btn.dataset.goto, 10);//10 means decimal, 2 means binary
+        //have to clean out before
+        searchView.clearResult();
+        searchView.displayRecipes(state.search.result, goToPage);
+    }
+  })
+  ```
+
   

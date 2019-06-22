@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { res } from '../views/mock';
 
 export default class Search {
   constructor(query) {
@@ -10,7 +11,8 @@ export default class Search {
     const key = 'f8aee65f0922e63ef4291313b991e82e';
     const url = 'https://www.food2fork.com/api/search';
     try {
-      const res = await axios(`${proxy}${url}?key=${key}&q=${this.query}`);
+      //const res = await axios(`${proxy}${url}?key=${key}&q=${this.query}`);
+      //Temporary use mock here because of network issues
       const recipes = res.data.recipes;
       this.result = recipes; //this means global varibal in the class.
     } catch(error) {
