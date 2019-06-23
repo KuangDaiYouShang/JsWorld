@@ -294,4 +294,73 @@ export const elements = {
   })
   ```
 
-  
+  ## Build controller"
+
+  * How to read data from the Page url
+  * How to respond to the hashchange event
+  * How to add the same event listener to multiple events
+
+  ``` javascript
+  ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+  ```
+
+  * As previously implemented render recipe function , once we click one of the search result, the url will change : 
+
+    href="#${el.recipe_id}"
+
+    According to the recipe_id in the url , we can get the Recipe object done.
+
+    ``` javascript
+    const id = window.location.hash.replace('#', '');
+    state.recipe = new Recipe(id);
+    ```
+
+  * Parse Ingredient
+
+     Use two arrays to map the ingredients
+
+    ``` javascript
+        const unitsLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoon', 'teaspoons', 'cup', 'pounds'];
+        const unitsShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
+        const newIngredients = this.ingredients.map(el => {
+          let ingredient = el.toLowerCase();
+          unitsLong.forEach((unit, i) => {
+            ingredient = ingredient.replace(unit, unitsShort[i]);
+          });
+    ```
+
+    Use regular expression to remove Parenthesis 
+
+    ``` javascript
+    ingredient = ingredient.replace(/ *\([^)]*\) */g, " ");
+    ```
+
+    Array.findIndex(el => some condition) will return the index of that array which meets the condition
+
+    eval() recognize a string as a java script code:
+
+    ``` javascript
+    const arrIng = ingredient.split(' ');
+          const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
+    
+          let objIng;
+          if(unitIndex > -1) {
+            //There is a unit
+            // E.g. 4 1/2 cups, arrCount is [4, 1/2] --> eval("4+1/2") --> 4.5
+            const arrCount = arrIng.slice(0, unitIndex);
+    
+            let count;
+            if(arrCount.length === 1) {
+              count = eval(arrIng[0].replace('-', '+')); //deal with 1-1/2
+            } else {
+              count = eval(arrIng.slice(0, unitIndex).join('+'));
+            }
+    
+            objIng = {
+              count,
+              unit: arrIng[unitIndex],
+              ingredient : arrIng.slice(unitIndex + 1).join(' ')
+            };
+    ```
+
+    
