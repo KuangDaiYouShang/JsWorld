@@ -1,6 +1,7 @@
 import Search from './models/Search';
 import { elements, elementStrings, renderLoader, clearLoader } from './views/base';
 import * as searchView from './views/searchViews'
+import * as recipeView from './views/recipeView'
 import Recipe from './models/Recipe';
 
 /** Global state of the app
@@ -64,8 +65,12 @@ const controlRecipe = async () => {
   console.log(id);
 
   if(id) {
+    //clear recipe
+    recipeView.clearRecipe();
     //prepare UI for changes
-
+    renderLoader(elements.recipeArea);
+    //hightlight the recipe
+    if(state.search) searchView.highlightSelected(id);
     //Create new recipe object
     state.recipe = new Recipe(id);
     //for testing
@@ -80,7 +85,10 @@ const controlRecipe = async () => {
       state.recipe.calcServings();
 
       //render recipe
+      clearLoader();
       console.log(state.recipe);
+      console.log('revipe View...');
+      recipeView.renderRecipe(state.recipe);
     } catch (err) {
       alert('Error processing recipe!');
     }

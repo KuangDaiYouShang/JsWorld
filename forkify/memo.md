@@ -364,3 +364,49 @@ export const elements = {
     ```
 
     
+
+## To add multiple li tags under ul tag using string template.
+
+##  Add other units to the unitsShorts array.
+
+
+
+## Use Fractional library to make 1.5 -> 1  1/2
+
+​	use the third party library : fractional
+
+``` javascript
+import { Fraction }  from 'fractional';
+
+const formatCount = count => {
+  if(count) {
+    const newCount = Math.round((count * 10000) / 10000);
+    const [int, dec] = newCount.toString().split('.').map(el => parseInt(el, 10));
+
+    if(!dec) return int;
+    if(int === 0) {
+      const fr = new Fration(newCount);
+      return `${fr.numerator}/${fr.denominator}`;
+    } else {
+      const fr = new Fraction(newCount - int);
+      return `${int} ${fr.numerator}/${fr.denominator}`;
+    }
+  }
+  return '?';
+};
+```
+
+
+
+## Use CSS selector to highlight the selected recipe
+
+``` javascript
+export const highlightSelected = id => {
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+    resultsArr.forEach(el => {
+        el.classList.remove('results__link--active');
+    });
+    document.querySelector(`.results__link[href*="${id}"]`).classList.add('results__link--active');
+};
+```
+
