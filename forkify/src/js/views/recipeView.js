@@ -60,12 +60,12 @@ export const renderRecipe = recipe => {
           <span class="recipe__info-text"> servings</span>
 
           <div class="recipe__info-buttons">
-              <button class="btn-tiny">
+              <button class="btn-tiny btn-decrease">
                   <svg>
                       <use href="img/icons.svg#icon-circle-with-minus"></use>
                   </svg>
               </button>
-              <button class="btn-tiny">
+              <button class="btn-tiny btn-increase">
                   <svg>
                       <use href="img/icons.svg#icon-circle-with-plus"></use>
                   </svg>
@@ -107,3 +107,14 @@ export const renderRecipe = recipe => {
   `;
   elements.recipeArea.insertAdjacentHTML('afterbegin', markup);
 }
+
+export const updateServingIngredients = recipe => {
+  //update servings
+  document.querySelector('.recipe__info-data--people').textContent = recipe.servings;
+
+  //update counts
+  var counts = Array.from(document.querySelectorAll('.recipe__count'));
+  counts.forEach((el, index) => {
+    el.textContent = recipe.ingredients[index].count;
+  });
+};

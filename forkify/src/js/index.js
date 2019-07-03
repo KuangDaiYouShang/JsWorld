@@ -96,3 +96,17 @@ const controlRecipe = async () => {
 };
 
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+elements.recipeArea.addEventListener('click', e => {
+  //There will be more buttons added to this area later, so we cannot use closest here.
+  //Instead, use match
+  if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+     if(state.recipe.servings > 1) {
+       state.recipe.updateServings('dec');
+       recipeView.updateServingIngredients(state.recipe);
+     }
+  } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+      state.recipe.updateServings('inc');
+      recipeView.updateServingIngredients(state.recipe);
+  }
+})

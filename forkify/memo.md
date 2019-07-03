@@ -410,3 +410,29 @@ export const highlightSelected = id => {
 };
 ```
 
+## Another way of implementing event delegation : .matches
+
+* The button does not exist before the recipe is shown.
+
+* There will be more buttons added to this area later.
+
+* It could be some child tags clicked
+
+  ``` javascript
+  elements.recipeArea.addEventListener('click', e => {
+    //There will be more buttons added to this area later, so we cannot use closest here.
+    //Instead, use match
+    if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+       if(state.recipe.servings > 1) {
+         state.recipe.updateServings('dec');
+         recipeView.updateServingIngredients(state.recipe);
+       }
+    } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+        state.recipe.updateServings('inc');
+        recipeView.updateServingIngredients(state.recipe);
+    }
+  })
+  ```
+
+  
+
