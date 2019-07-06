@@ -416,7 +416,17 @@ export const highlightSelected = id => {
 
 * There will be more buttons added to this area later.
 
-* It could be some child tags clicked
+* It could be some child tags clicked like svg
+
+  ```html
+          <button class="shopping__delete btn-tiny">
+              <svg>
+                  <use href="img/icons.svg#icon-circle-with-cross"></use>
+              </svg>
+          </button>
+  ```
+
+  
 
   ``` javascript
   elements.recipeArea.addEventListener('click', e => {
@@ -434,5 +444,76 @@ export const highlightSelected = id => {
   })
   ```
 
+  ## How and why to create unique IDs using external package
+
+  ``` 
+  npm install uniqid
+  
+  import uniqueid from 'uniqid';
+  
+  id : uniqueid()
+  ```
+
   
 
+  ## Difference between Array.slice and Array.splice
+
+  * Array.splice does not mutate the original array
+
+  * Array.slice mutate the original array, and it doe not include the second index
+
+    ```
+    [2,4,8] splice(1,2) -> returns [4, 8], original array is [2]
+    [2,4,8] slice(1,2) -> returns 4, original array is [2,4,8] 
+    ```
+
+  
+
+  ## More uses cases for Array.findIndex and Array.find
+
+  ``` javascript
+    deleteItem(id) {
+      const index = this.items.findIndex(el => el.id == id); //find the index
+      this.items.splice(index, 1);
+    }
+  
+    updateItem(id, newCount) {
+      this.items.find(el => el.id == id).count = newCount; //find the item itself
+    }
+  ```
+
+  
+
+  ## data-xx-yy attribute and CSS selector
+
+  ``` javascript
+      <li class="shopping__item" data-itemid=${item.id}>
+      
+      const item = document.querySelector(`[date-itemid="${id}"]`);
+      
+      
+      //handle delete item and update list items event
+  elements.shopping.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+    console.log(id);
+    if(e.target.matches('.shopping__delete, .shopping__delete *')) {
+      //delete item from UI
+      listView.deleteItem(id);
+      //delete item from state
+      state.list.deleteItem(id);
+      console.log(state.list);
+    }
+  });
+  ```
+
+  ## little conclusion : 
+
+  ```
+  event => controller.eventHandler => controller function => [view, model]
+  
+  event delegetion: event added to the area , use matches to decide different actions.
+  ```
+
+  
+
+  
