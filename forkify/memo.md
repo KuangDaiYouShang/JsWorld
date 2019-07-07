@@ -516,4 +516,23 @@ export const highlightSelected = id => {
 
   
 
+  ## Use parent class in query selector
+
+  ```
+        <button class="recipe__love">
+            <svg class="header__likes">
+                <use href="img/icons.svg#icon-heart-outlined"></use>
+            </svg>
+        </button>
+  
+  
+  document.querySelector('.recipe__love use').setAttribute('href', `img/icons.svg#${iconString}`);
+  ```
+
+  ## Change single CSS style
+
+  ``` javascript
+  elements.likesMenu.style.visibility = numLikes > 0 ? 'visible' : 'hidden';
+  ```
+
   

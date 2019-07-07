@@ -3,8 +3,10 @@ import { elements, elementStrings, renderLoader, clearLoader } from './views/bas
 import * as searchView from './views/searchViews'
 import * as recipeView from './views/recipeView'
 import * as listView from './views/listView'
+import * as likeView from './views/likeView'
 import List from './models/List';
 import Recipe from './models/Recipe';
+import Likes from './models/Likes';
 
 /** Global state of the app
  *- Search Object
@@ -90,8 +92,13 @@ const controlRecipe = async () => {
       clearLoader();
       console.log(state.recipe);
       console.log('revipe View...');
-      recipeView.renderRecipe(state.recipe);
+      if(state.likes) {
+        recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
+      } else {
+        recipeView.renderRecipe(state.recipe, false);
+      }
     } catch (err) {
+      console.log(err);
       alert('Error processing recipe!');
     }
   }
@@ -106,6 +113,29 @@ const controList = recipe => {
     listView.renderItem(item);
   })
 };
+
+//like controller
+state.likes = new Likes();//for test
+likeView.toggleLikeMenu(state.likes.getNumLikes); // for test
+ const controlLike = () => {
+   if(!state.likes) state.likes = new Likes();
+   const id = state.recipe.id;
+   if(!state.likes.isLiked(id)) {
+     //add
+     state.likes.addLike(id, state.recipe.title, state.recipe.author, state.recipe.img);
+     //toggle button
+     likeView.toggleButton(true);
+     //UI
+   } else {
+     //delete
+     state.likes.deleteLike(id);
+     //toggle button
+     likeView.toggleButton(false);
+     //UI
+   }
+   console.log(state.likes);
+   likeView.toggleLikeMenu(state.likes.getNumLikes());
+ }
 
 //handle delete item and update list items event
 elements.shopping.addEventListener('click', e => {
@@ -138,5 +168,7 @@ elements.recipeArea.addEventListener('click', e => {
       recipeView.updateServingIngredients(state.recipe);
   } else if (e.target.matches('.recipe__btn, .recipe__btn--add *')) {
       controList(state.recipe);
+  } else if (e.target.matches('.recipe__love, .recipe__love *')) {
+      controlLike();
   }
 })
