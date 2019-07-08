@@ -535,4 +535,15 @@ export const highlightSelected = id => {
   elements.likesMenu.style.visibility = numLikes > 0 ? 'visible' : 'hidden';
   ```
 
-  
+  ## It is always a good idea to test if querySelector is successful
+
+  ``` javascript
+  export const deleteLikes = id => {
+    const el = document.querySelector(`.likes__link[href*="${id}"]`).parentElement;
+    if(el) {
+      el.parentElement.removeChild();
+    }
+  }
+  ```
+
+  ## Implement Persistent Data with localStorage

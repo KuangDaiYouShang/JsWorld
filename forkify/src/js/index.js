@@ -122,16 +122,18 @@ likeView.toggleLikeMenu(state.likes.getNumLikes); // for test
    const id = state.recipe.id;
    if(!state.likes.isLiked(id)) {
      //add
-     state.likes.addLike(id, state.recipe.title, state.recipe.author, state.recipe.img);
+     const newLike = state.likes.addLike(id, state.recipe.title, state.recipe.author, state.recipe.img);
      //toggle button
      likeView.toggleButton(true);
      //UI
+     likeView.renderLikes(newLike);
    } else {
      //delete
      state.likes.deleteLike(id);
      //toggle button
      likeView.toggleButton(false);
      //UI
+     likeView.deleteLikes(id);
    }
    console.log(state.likes);
    likeView.toggleLikeMenu(state.likes.getNumLikes());

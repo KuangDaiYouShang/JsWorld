@@ -7,7 +7,7 @@ export const highlightSelected = id => {
     resultsArr.forEach(el => {
         el.classList.remove('results__link--active');
     });
-    document.querySelector(`a[href*="${id}"]`).classList.add('results__link--active');
+    document.querySelector(`.results__link[href*="${id}"]`).classList.add('results__link--active');
 };
 
 //clean the input
@@ -22,7 +22,7 @@ export const clearResult = () => {
 }
 
 //The following function takes the words of the title till the total length is 17
-const limitTitle = (title, limit = 17) => {
+export const limitTitle = (title, limit = 17) => {
    const newTitle = [];
    if(title.length > 17) {
      title.split(' ').reduce((acc, cur) => {
