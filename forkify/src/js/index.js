@@ -115,8 +115,6 @@ const controList = recipe => {
 };
 
 //like controller
-state.likes = new Likes();//for test
-likeView.toggleLikeMenu(state.likes.getNumLikes); // for test
  const controlLike = () => {
    if(!state.likes) state.likes = new Likes();
    const id = state.recipe.id;
@@ -138,6 +136,19 @@ likeView.toggleLikeMenu(state.likes.getNumLikes); // for test
    console.log(state.likes);
    likeView.toggleLikeMenu(state.likes.getNumLikes());
  }
+
+ //restore liked recipes in page load
+ window.addEventListener('load', () => {
+   //Initialize
+   state.likes = new Likes();
+
+   //restoring the storage
+   state.likes.readStorage();
+
+   likeView.toggleLikeMenu(state.likes.getNumLikes());
+
+   state.likes.likes.forEach(el => likeView.renderLikes(el));
+ });
 
 //handle delete item and update list items event
 elements.shopping.addEventListener('click', e => {

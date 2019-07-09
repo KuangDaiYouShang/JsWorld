@@ -547,3 +547,31 @@ export const highlightSelected = id => {
   ```
 
   ## Implement Persistent Data with localStorage
+
+  ​	data persists throughout page loads
+
+  * How to use localStorage API
+
+  * How to set, get and delete items from local storage
+
+    ``` javascript
+    localStorage.setItem('id', 'jsonString');
+    localStorage.getItem('id');
+    
+    //---------
+      persistData() {
+        localStorage.setItem('likes', JSON.stringify(this.likes));
+      }
+    
+      readStorage() {
+        const storage = JSON.parse(localStorage.getItem('likes'));
+        if(storage) this.likes = storage;
+      }
+    
+    ```
+
+  ## I did it!
+
+  Finally, I need to wrap up the project by : npm run build 
+
+  and then all the js file will be the bundle.js!!
